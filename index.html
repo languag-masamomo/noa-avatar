@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haloa | Concierge Noa</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="brand">
+    <div class="brand-name">Haloa</div>
+    <div class="brand-sub">Concierge&nbsp;Noa</div>
+  </header>
+
+  <main class="stage">
+
+    <div class="portrait-wrap">
+      <img id="noaImg" class="noa-img" src="noa.png" alt="ノア">
+      <div class="glow"></div>
+    </div>
+
+    <div id="messageBubble" class="message-bubble">
+      ボタンを押すと、ノアがご挨拶します。
+    </div>
+
+    <div class="button-row">
+      <button id="meetButton" class="meet-button" type="button">
+        ノアに会う
+      </button>
+      <button id="stopButton" class="action-button secondary" type="button">
+        停止
+      </button>
+    </div>
+
+    <audio id="noaAudio" preload="auto">
+      <source src="noa-greeting.mp3" type="audio/mpeg">
+    </audio>
+
+  </main>
+
+  <footer class="page-footer">
+    &copy; Haloa
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
