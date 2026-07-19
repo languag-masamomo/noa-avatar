@@ -82,6 +82,8 @@ function onSpeechStart() {
   startAnimation();
   messageBubble.textContent = GREETING_TEXT;
   meetButton.textContent = "もう一度ノアの声を聞く";
+  // 挨拶を待てない人もいるので、話し始めた時点でLINEボタンも出しておく
+  lineInvite.classList.add("visible");
 }
 
 function onSpeechEnd() {
@@ -93,7 +95,7 @@ function onSpeechComplete() {
   stopAnimation();
   window.setTimeout(() => {
     lineInvite.classList.add("visible");
-  }, 1400);
+  }, 400);
 }
 
 // ---------- 録音済み音声（noa-greeting.mp3） ----------
