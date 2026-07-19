@@ -38,7 +38,6 @@ const synth = window.speechSynthesis;
 // ---------- 画像の動き ----------
 
 function startAnimation() {
-  noaImg.classList.add("speaking");
   if (noaVideo) {
     try {
       noaVideo.currentTime = 0;
@@ -47,18 +46,35 @@ function startAnimation() {
     const p = noaVideo.play();
     if (p && typeof p.catch === "function") {
       p.catch(() => {
-        // 動画が再生できなくても、画像側のアニメーションが動くので問題ない
+        // 動画が再生できない場合だけ、代わりに画像を揺らす
+        noaVideo.classList.remove("active");
+        noaImg.classList.add("speaking");
       });
     }
+  } else {
+    noaImg.classList.add("speaking");
   }
 }
 
 function stopAnimation() {
   noaImg.classList.remove("speaking");
+  noaImg.classList.remove("img-hidden");
   if (noaVideo) {
     noaVideo.classList.remove("active");
     noaVideo.pause();
   }
+}
+
+// 動画が実際に再生され始めたときだけ、下の画像を完全に消す
+// （拡大縮小のアニメーションと重なって、下の画像が透けて見えるのを防ぐ）
+if (noaVideo) {
+  noaVideo.addEventListener("playing", () => {
+    noaImg.classList.remove("speaking");
+    noaImg.classList.add("img-hidden");
+  });
+  noaVideo.addEventListener("pause", () => {
+    noaImg.classList.remove("img-hidden");
+  });
 }
 
 function onSpeechStart() {

@@ -90,6 +90,11 @@ body{
   animation:noaFloat 2.6s ease-in-out infinite;
 }
 
+.noa-img.img-hidden{
+  opacity:0;
+  transition:none;
+}
+
 .noa-video{
   position:absolute;
   inset:0;
