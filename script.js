@@ -4,18 +4,34 @@
 // 同じ文章を代わりに読み上げる（音声が出ない状態に見せないための保険）。
 
 const GREETING_TEXT =
-  "はじめまして。\n" +
-  "Haloaコンシェルジュのノアです。\n" +
+  "🌿\n" +
+  "こんにちは。\n" +
   "会いに来てくださって、ありがとうございます。\n" +
-  "私は、あなたを評価したり、足りないところを探したりするためにいるのではありません。\n" +
-  "まずは、あなたのお話を聞くことから始めたいと思っています。\n" +
-  "今日は、何か気になっていることはありますか？";
+  "私は、Haloa AIコンシェルジュのノアです。\n" +
+  "ここでは、何かを頑張ったり、\n" +
+  "正解を探したりしなくても大丈夫。\n" +
+  "今のあなたのままで、\n" +
+  "お話ししていただけたら嬉しいです。\n" +
+  "もし少し疲れていたり、\n" +
+  "なんとなく気になることがあったり、\n" +
+  "誰かに聞いてほしいことがあったら、\n" +
+  "遠慮なく話しかけてくださいね。\n" +
+  "私は、あなたのお話を聞くところから、\n" +
+  "始めたいと思っています。\n" +
+  "もし、\n" +
+  "「またノアと話したいな」\n" +
+  "そう思っていただけたら、\n" +
+  "いつでも会いに来られるように、\n" +
+  "HaloaのLINEをご用意しています。\n" +
+  "お会いできるのを、楽しみにしています🌿";
 
 const noaImg = document.getElementById("noaImg");
+const noaVideo = document.getElementById("noaVideo");
 const messageBubble = document.getElementById("messageBubble");
 const meetButton = document.getElementById("meetButton");
 const stopButton = document.getElementById("stopButton");
 const noaAudio = document.getElementById("noaAudio");
+const lineInvite = document.getElementById("lineInvite");
 
 const synth = window.speechSynthesis;
 
@@ -23,10 +39,26 @@ const synth = window.speechSynthesis;
 
 function startAnimation() {
   noaImg.classList.add("speaking");
+  if (noaVideo) {
+    try {
+      noaVideo.currentTime = 0;
+    } catch (e) {}
+    noaVideo.classList.add("active");
+    const p = noaVideo.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(() => {
+        // 動画が再生できなくても、画像側のアニメーションが動くので問題ない
+      });
+    }
+  }
 }
 
 function stopAnimation() {
   noaImg.classList.remove("speaking");
+  if (noaVideo) {
+    noaVideo.classList.remove("active");
+    noaVideo.pause();
+  }
 }
 
 function onSpeechStart() {
@@ -39,11 +71,19 @@ function onSpeechEnd() {
   stopAnimation();
 }
 
+// 挨拶を最後まで話し終えたときだけ呼ぶ（停止ボタンでの中断とは区別する）
+function onSpeechComplete() {
+  stopAnimation();
+  window.setTimeout(() => {
+    lineInvite.classList.add("visible");
+  }, 1400);
+}
+
 // ---------- 録音済み音声（noa-greeting.mp3） ----------
 
 noaAudio.addEventListener("play", onSpeechStart);
 noaAudio.addEventListener("pause", onSpeechEnd);
-noaAudio.addEventListener("ended", onSpeechEnd);
+noaAudio.addEventListener("ended", onSpeechComplete);
 
 // ---------- ブラウザの声での代わりの読み上げ（保険） ----------
 
@@ -53,7 +93,7 @@ function speakFallback() {
   const utter = new SpeechSynthesisUtterance(GREETING_TEXT);
   utter.lang = "ja-JP";
   utter.onstart = onSpeechStart;
-  utter.onend = onSpeechEnd;
+  utter.onend = onSpeechComplete;
   utter.onerror = onSpeechEnd;
   synth.speak(utter);
 }
@@ -68,6 +108,7 @@ function speakFallback() {
 // ブラウザの声で代わりに読み上げる。
 function playGreeting(isAutoAttempt) {
   if (synth) synth.cancel();
+  lineInvite.classList.remove("visible");
 
   try {
     noaAudio.currentTime = 0;
@@ -101,6 +142,7 @@ stopButton.addEventListener("click", () => {
   } catch (e) {}
   if (synth) synth.cancel();
   stopAnimation();
+  lineInvite.classList.remove("visible");
 });
 
 // ---------- ページを開いたときの自動挨拶（できる場合のみ） ----------

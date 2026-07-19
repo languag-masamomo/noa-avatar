@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Haloa | Concierge Noa</title>
+<meta name="description" content="会いに来てくださって、ありがとうございます。Haloaコンシェルジュのノアが、あなたのお話を聞くところから始めます。">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://languag-masamomo.github.io/noa-avatar/">
+<meta property="og:title" content="Haloa | Concierge Noa">
+<meta property="og:description" content="会いに来てくださって、ありがとうございます。Haloaコンシェルジュのノアが、あなたのお話を聞くところから始めます。">
+<meta property="og:image" content="https://languag-masamomo.github.io/noa-avatar/noa-smile.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Haloa | Concierge Noa">
+<meta name="twitter:description" content="会いに来てくださって、ありがとうございます。Haloaコンシェルジュのノアが、あなたのお話を聞くところから始めます。">
+<meta name="twitter:image" content="https://languag-masamomo.github.io/noa-avatar/noa-smile.png">
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,8 +29,31 @@
   <main class="stage">
 
     <div class="portrait-wrap">
-      <img id="noaImg" class="noa-img" src="noa.png" alt="ノア">
+      <img id="noaImg" class="noa-img" src="noa-smile.png" alt="ノア">
+      <video
+        id="noaVideo"
+        class="noa-video"
+        muted
+        loop
+        playsinline
+        preload="auto"
+      >
+        <source src="noa-greeting.mp4.mp4" type="video/mp4">
+      </video>
       <div class="glow"></div>
+    </div>
+
+    <div id="lineInvite" class="line-invite">
+      <p class="line-invite-text">🌿 また会いに来てくださいね</p>
+      <a
+        id="lineButton"
+        class="line-button"
+        href="https://lin.ee/ZzOFsq3"
+        target="_blank"
+        rel="noopener"
+      >
+        🌿 LINEでノアに会いに行く
+      </a>
     </div>
 
     <div id="messageBubble" class="message-bubble">
